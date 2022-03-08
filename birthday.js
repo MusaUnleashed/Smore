@@ -55,18 +55,15 @@ class Birthday {
       }
     }
 
-    return allRunMatches;
+    return allRunMatches.length / numOfRuns;
   };
 
   chance_by_number_of_runs = (N, numOfRuns) => {
-    const allRunMatches = this._matches_by_iteration(N, numOfRuns);
+    const runsMatchesAccuracy = this._matches_by_iteration(N, numOfRuns);
     console.log(
-      ` giving ${N} num of people and ${numOfRuns} numbers of runs  the chance is ${
-        allRunMatches.length / numOfRuns
-      }`
+      ` giving ${N} num of people and ${numOfRuns} numbers of runs  the chance of shared Birthday is ${runsMatchesAccuracy}`
     );
   };
-
   chance_by_accuracy(N, desired_accuracy) {
     let numOfRuns = 0;
     let maxIterations = 1000;
@@ -78,8 +75,8 @@ class Birthday {
 
       let randomRuns = Math.ceil(this._randomValueBetween(min, max));
       // console.log(numOfRuns);
-      let currentRunMatches = this._matches_by_iteration(N, randomRuns);
-      let eps = 1 - currentRunMatches.length / randomRuns;
+      let currentRunMatchesAccuracy = this._matches_by_iteration(N, randomRuns);
+      let eps = 1 - currentRunMatchesAccuracy;
       if (eps <= desired_accuracy) {
         this.chance_by_number_of_runs(N, randomRuns);
         stop = true;
@@ -96,12 +93,12 @@ class Birthday {
 const birthday = new Birthday();
 
 console.log("================Chance By Runs ==================\n");
-birthday.chance_by_number_of_runs(23, 10);
-birthday.chance_by_number_of_runs(23, 100);
-birthday.chance_by_number_of_runs(23, 500);
-birthday.chance_by_number_of_runs(23, 1000);
-console.log("================Chance By Accuraccy ==================\n");
-birthday.chance_by_accuracy(21, 0.01);
-birthday.chance_by_accuracy(22, 0.01);
-birthday.chance_by_accuracy(23, 0.01);
-birthday.chance_by_accuracy(22, 0.051);
+// birthday.chance_by_number_of_runs(23, 10);
+// birthday.chance_by_number_of_runs(23, 100);
+// birthday.chance_by_number_of_runs(23, 500);
+// birthday.chance_by_number_of_runs(23, 1000);
+// console.log("================Chance By Accuraccy ==================\n");
+// birthday.chance_by_accuracy(21, 0.01);
+// birthday.chance_by_accuracy(22, 0.01);
+// birthday.chance_by_accuracy(23, 0.01);
+birthday.chance_by_accuracy(14, 0.0051);
