@@ -3,7 +3,7 @@ class Birthday {
     // range of date to take 5 so that it include leap year
     this.GBirthdayParams = {
       startDate: new Date(2000, 0, 1),
-      endDate: new Date(2017, 0, 1),
+      endDate: new Date(2022, 0, 1),
     };
   }
 
@@ -34,7 +34,8 @@ class Birthday {
     const dateMatched = {};
     let counter = 0;
     for (let i = 0; i < dates.length; i++) {
-      const key = "key" + dates[i].getDay() + dates[i].getMonth();
+      const key = "key" + dates[i].getDate() + "-" + dates[i].getMonth();
+      // console.log(' dates[i].getDate()', dates[i].getDate());
       if (!dateMatched[key]) {
         dateMatched[key] = true;
       } else if (dateMatched[key] === true) {
@@ -65,27 +66,25 @@ class Birthday {
     );
   };
   chance_by_accuracy(N, desired_accuracy) {
-    let numOfRuns = 0;
-    let maxIterations = 1000;
+    let numOfRuns = 1;
     let stop = false;
+    let prevRunsAverage = this._matches_by_iteration(N, numOfRuns);
 
-    while (!stop && numOfRuns < maxIterations) {
-      const min = 1,
-        max = 1000;
+    while (!stop) {
+      numOfRuns++;
 
-      let randomRuns = Math.ceil(this._randomValueBetween(min, max));
       // console.log(numOfRuns);
-      let currentRunMatchesAccuracy = this._matches_by_iteration(N, randomRuns);
-      let eps = 1 - currentRunMatchesAccuracy;
+      let currentRunMatchesAccuracy = this._matches_by_iteration(N, numOfRuns);
+      let newRunAverage =
+        (prevRunsAverage + currentRunMatchesAccuracy) / numOfRuns;
+      let eps = newRunAverage - prevRunsAverage;
       if (eps <= desired_accuracy) {
-        this.chance_by_number_of_runs(N, randomRuns);
+        this.chance_by_number_of_runs(N, numOfRuns);
         stop = true;
       }
-      numOfRuns++;
-    }
+      prevRunsAverage = newRunAverage;
 
-    if (numOfRuns == maxIterations) {
-      console.log("run max Itrations and  Couldn find ");
+      numOfRuns++;
     }
   }
 }
@@ -93,12 +92,12 @@ class Birthday {
 const birthday = new Birthday();
 
 console.log("================Chance By Runs ==================\n");
-// birthday.chance_by_number_of_runs(23, 10);
-// birthday.chance_by_number_of_runs(23, 100);
-// birthday.chance_by_number_of_runs(23, 500);
-// birthday.chance_by_number_of_runs(23, 1000);
+birthday.chance_by_number_of_runs(23, 10);
+birthday.chance_by_number_of_runs(23, 100);
+birthday.chance_by_number_of_runs(23, 500);
+birthday.chance_by_number_of_runs(23, 1000);
 // console.log("================Chance By Accuraccy ==================\n");
 // birthday.chance_by_accuracy(21, 0.01);
 // birthday.chance_by_accuracy(22, 0.01);
 // birthday.chance_by_accuracy(23, 0.01);
-birthday.chance_by_accuracy(14, 0.0051);
+// birthday.chance_by_accuracy(13, 0.0051);
