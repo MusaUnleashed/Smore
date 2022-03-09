@@ -66,25 +66,25 @@ class Birthday {
     );
   };
   chance_by_accuracy(N, desired_accuracy) {
-    let numOfRuns = 1;
+    let numOfRuns = 20;
     let stop = false;
     let prevRunsAverage = this._matches_by_iteration(N, numOfRuns);
-
+    let whileCounter = 0;
     while (!stop) {
-      numOfRuns++;
-
-      // console.log(numOfRuns);
+      numOfRuns +=10;
+      //for testing
+      whileCounter++;
       let currentRunMatchesAccuracy = this._matches_by_iteration(N, numOfRuns);
       let newRunAverage =
-        (prevRunsAverage + currentRunMatchesAccuracy) / numOfRuns;
-      let eps = newRunAverage - prevRunsAverage;
+        (prevRunsAverage *(numOfRuns-1) + currentRunMatchesAccuracy) / numOfRuns;
+      let eps = Math.abs(newRunAverage - prevRunsAverage);
       if (eps <= desired_accuracy) {
         this.chance_by_number_of_runs(N, numOfRuns);
         stop = true;
+        // console.log('testing loop runs ',whileCounter);
       }
       prevRunsAverage = newRunAverage;
 
-      numOfRuns++;
     }
   }
 }
@@ -96,8 +96,8 @@ birthday.chance_by_number_of_runs(23, 10);
 birthday.chance_by_number_of_runs(23, 100);
 birthday.chance_by_number_of_runs(23, 500);
 birthday.chance_by_number_of_runs(23, 1000);
-// console.log("================Chance By Accuraccy ==================\n");
-// birthday.chance_by_accuracy(21, 0.01);
-// birthday.chance_by_accuracy(22, 0.01);
-// birthday.chance_by_accuracy(23, 0.01);
-// birthday.chance_by_accuracy(13, 0.0051);
+console.log("================Chance By Accuraccy ==================\n");
+birthday.chance_by_accuracy(23, 0.01);
+birthday.chance_by_accuracy(16, 0.00071);
+birthday.chance_by_accuracy(15, 0.0001);
+birthday.chance_by_accuracy(20, 0.1);
