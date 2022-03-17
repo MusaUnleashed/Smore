@@ -3,14 +3,12 @@
 function Writer(){
 
     writer.lock();
-
-       
         writerTillFinish.lock();
         readerToWait = readerCounter;
-       
+    
             write();
-       
-        readerToWait = 0;
+    
+        readersToWait = 0;
         writerTillFinish.unlock();
     writer.unlock();
 }
@@ -18,8 +16,7 @@ function Writer(){
 function Reader(){
     reader.lock();
         readerCounter++;
-        if(readerToWait > 0){// new Writer 
-
+        if(readersToWait > 0){// new Writer 
             writerTillFinish.lock();// wait till writer free you 
             writerTillFinish.Unlock();// since it locked writer cant use it so we free it 
         }
@@ -29,7 +26,7 @@ function Reader(){
     
     reader.lock();
         readerCounter--
-        readerToWait--;
+        readersToWait--;
     reader.unlock();  
 }
 
